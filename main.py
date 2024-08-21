@@ -55,6 +55,34 @@ def enable_port(session,token,name):
             )
     return ret.json()
 
+def enable_all_port(session,token):
+    headers = {"Content-Type":"application/x-www-form-urlencoded"}
+    data = f"token={token}&op=enable&_={random.random()}"
+    ret = session.post("http://192.168.1.1/cgi-bin/luci/admin/settings/pmSetAll",
+            headers = headers,
+            data = data
+            )
+    return {}
+
+def disable_all_port(session,token):
+    headers = {"Content-Type":"application/x-www-form-urlencoded"}
+    data = f"token={token}&op=disable&_={random.random()}"
+    ret = session.post("http://192.168.1.1/cgi-bin/luci/admin/settings/pmSetAll",
+            headers = headers,
+            data = data
+            )
+    return {}
+
+def del_all_port(session,token):
+    headers = {"Content-Type":"application/x-www-form-urlencoded"}
+    data = f"token={token}&op=del&_={random.random()}"
+    ret = session.post("http://192.168.1.1/cgi-bin/luci/admin/settings/pmSetAll",
+            headers = headers,
+            data = data
+            )
+    print(ret.content)
+    return {}
+
 # 登录
 session,token = login('useradmin','yourpassword')
 print(session,token)
@@ -75,6 +103,18 @@ print(json.dumps(ret_json,indent=4,sort_keys=True))
 ret_json = enable_port(session,token,"我的小主机")
 print(json.dumps(ret_json,indent=4,sort_keys=True))
 
-# 删除开放端口
+# 删除端口映射
 ret_json = del_port(session,token,"我的小主机")
+print(json.dumps(ret_json,indent=4,sort_keys=True))
+
+# 开启所有端口映射
+ret_json = enable_all_port(session,token)
+print(json.dumps(ret_json,indent=4,sort_keys=True))
+
+# 关闭所有端口映射
+ret_json = disable_all_port(session,token)
+print(json.dumps(ret_json,indent=4,sort_keys=True))
+
+# 删除所有端口映射
+ret_json = del_all_port(session,token)
 print(json.dumps(ret_json,indent=4,sort_keys=True))
